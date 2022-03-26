@@ -1,0 +1,10 @@
+.container{
+    display: flexbox;
+
+}
+
+.item{
+    width: 100%;
+    /* background-color: red; */
+}
+
