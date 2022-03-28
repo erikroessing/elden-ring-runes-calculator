@@ -31,7 +31,8 @@ for(let runeId in runesMap){
         runeName = runeNameList[0] + " Rune " + "["+runeNameList[1] + "]"
     }
     runesAmount[runeId] = 0
-    container.insertAdjacentHTML("beforeend", `<div class="item">
+
+    container.insertAdjacentHTML("beforeend", `<div class="item-rune">
         ${runeName} (Value: ${runesMap[runeId]})
         Count:
         <input id='input-count-${runeId}' type='number' value=0 min=0></input>
@@ -40,36 +41,40 @@ for(let runeId in runesMap){
         <button id='button-rune-${runeId}-plus'>+</button>
         <button id='button-rune-${runeId}-minus'>-</button>
     </div>`)
-    console.log(`#button-rune-${runeId}-plus`)
+
     document.querySelector(`#button-rune-${runeId}-plus`).addEventListener("click", function(){
         runesAmount[runeId] += runesMap[runeId]
-        document.querySelector(`#input-count-${runeId}`).value = runesAmount[runeId]/runesMap[runeId]
-        document.querySelector(`#input-total-${runeId}`).value = runesAmount[runeId]
-        document.querySelector("#total-runes").innerHTML = calcRunes()
+        buttonDocumentChanges(runeId)
     })
+
     document.querySelector(`#button-rune-${runeId}-minus`).addEventListener("click", function(){
-        
         if(runesAmount[runeId] > 0){
             runesAmount[runeId] -= runesMap[runeId]
-            document.querySelector(`#input-count-${runeId}`).value = runesAmount[runeId]/runesMap[runeId]
-            document.querySelector(`#input-total-${runeId}`).value = runesAmount[runeId]
-            document.querySelector("#total-runes").innerHTML = calcRunes()
-
+            buttonDocumentChanges(runeId)
         }
     })
+
     document.querySelector(`#input-count-${runeId}`).addEventListener('input', (event)=>{
         runesAmount[runeId] = runesMap[runeId]*event.target.value
         document.querySelector(`#input-total-${runeId}`).value = runesAmount[runeId]
-        document.querySelector("#total-runes").innerHTML = calcRunes()
+        document.querySelector("#total-runes").innerHTML = getTotalRunes()
     })
+
     document.querySelector(`#input-total-${runeId}`).addEventListener('input', (event)=>{
         runesAmount[runeId] = parseInt(event.target.value)
         document.querySelector(`#input-count-${runeId}`).value = runesAmount[runeId]/runesMap[runeId]
-        document.querySelector("#total-runes").innerHTML = calcRunes()
+        document.querySelector("#total-runes").innerHTML = getTotalRunes()
     })
 }
 
-function calcRunes(){
+
+function buttonDocumentChanges(runeId){
+    document.querySelector(`#input-count-${runeId}`).value = runesAmount[runeId]/runesMap[runeId]
+    document.querySelector(`#input-total-${runeId}`).value = runesAmount[runeId]
+    document.querySelector("#total-runes").innerHTML = getTotalRunes()
+}
+
+function getTotalRunes(){
     let totalRunes = 0
     for (let item in runesAmount) {
         totalRunes += runesAmount[item]   
